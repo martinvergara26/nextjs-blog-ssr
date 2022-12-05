@@ -3,17 +3,17 @@ import styles from '../styles/Home.module.css';
 import Link from 'next/link'
 import Image from "next/legacy/image";
 
-export default function Home() {
+export default function Home({ randValue }) {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Trying Image Optimization</title>
+        <title>Trying ISR</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <h1 className="title">
-          Read <Link href="/posts/first-post">this page!</Link>
+          Hello, the random value is {randValue}
         </h1>
 
         <p className={styles.description}>
@@ -128,4 +128,23 @@ export default function Home() {
       `}</style>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const rand = new Promise(resolve => {
+    setTimeout(() => resolve(
+      Math.random() * 100
+    ), 500)
+  })
+
+  console.log('FETCHING RANDOM VALUE')
+
+  const randValue = await rand
+
+  return {
+    props: {
+      randValue
+    },
+    revalidate: false
+  }
 }
